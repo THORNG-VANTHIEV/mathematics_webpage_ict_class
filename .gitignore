@@ -2,5 +2,9 @@
 Thumbs.db
 .vscode/
 
+# Python
+__pycache__/
+*.pyc
+
 # Source Word document of the course book (large, kept out of the repo)
 *.docx

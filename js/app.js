@@ -405,7 +405,7 @@
         } else if (hash === 'references') {
           state.currentView = 'references';
           renderReferencesView();
-        } else if (hash.startsWith('lesson-')) {
+        } else if (hash.startsWith('lesson-') || hash.startsWith('solution-')) {
           state.currentView = 'lesson';
           state.currentLessonId = hash;
           renderLessonView(hash);
@@ -463,9 +463,10 @@
     `;
 
         data.chapters.forEach((chap, idx) => {
-          const badgeClass = idx === 0 ? 'word' : (idx === 1 ? 'excel' : 'ppt');
+          const badgeClass = chap.id === 'chapter-solutions' ? 'chap-sol' : `chap-${idx + 1}`;
           const isOpen = idx === 0 ? 'open' : ''; // Open first chapter by default
           const chapLessons = data.lessons.filter(l => l.chapterId === chap.id);
+          const countLabel = chap.id === 'chapter-solutions' ? `${kh(chapLessons.length)} កំណែ` : `${kh(chapLessons.length)} មេរៀន`;
 
           html += `
         <div class="chapter-accordion ${isOpen}" id="accordion-${chap.id}">
@@ -473,7 +474,7 @@
             <div class="chapter-header-content">
               <div class="chapter-meta-row">
                 <span class="chapter-badge ${badgeClass}">${chap.number}</span>
-                <span class="chapter-count-text">${kh(chapLessons.length)} មេរៀន</span>
+                <span class="chapter-count-text">${countLabel}</span>
               </div>
               <div class="chapter-title-text">${chap.title}</div>
             </div>
@@ -484,11 +485,13 @@
 
           chapLessons.forEach(les => {
             const isDone = state.completedLessons.has(les.id);
+            const isSol = les.id.startsWith('solution-');
+            const pillLabel = isSol ? `គ.${kh(les.number)}` : kh(String(les.number).padStart(2, '0'));
             html += `
           <li>
             <div class="lesson-nav-btn" id="nav-${les.id}">
               <a href="#${les.id}" class="lesson-nav-left" style="text-decoration:none; color:inherit;">
-                <span class="lesson-pill-num">${kh(String(les.number).padStart(2, '0'))}</span>
+                <span class="lesson-pill-num" style="${isSol ? 'background-color:rgba(13,148,136,0.15); color:#0d9488;' : ''}">${pillLabel}</span>
                 <span class="lesson-nav-title">${les.title}</span>
               </a>
               <div class="lesson-status-check ${isDone ? 'completed' : ''}" 
@@ -632,6 +635,10 @@
         const prevLesson = currentIndex > 0 ? data.lessons[currentIndex - 1] : null;
         const nextLesson = currentIndex < data.lessons.length - 1 ? data.lessons[currentIndex + 1] : null;
 
+        const isSol = lesson.id.startsWith('solution-');
+        const breadcrumbLabel = isSol ? `អត្រាកំណែមេរៀនទី${kh(lesson.number)}` : `មេរៀនទី${kh(lesson.number)}`;
+        const pageHeaderTitle = isSol ? `${lesson.title}` : `មេរៀនទី${kh(lesson.number)}៖ ${lesson.title}`;
+
         let html = `
       <!-- Breadcrumb -->
       <nav class="breadcrumb-bar">
@@ -639,7 +646,7 @@
         <span class="breadcrumb-separator">/</span>
         <span class="breadcrumb-item">${chap ? chap.title : ''}</span>
         <span class="breadcrumb-separator">/</span>
-        <span class="breadcrumb-item" style="color:var(--text-main); font-weight:600;">មេរៀនទី${kh(lesson.number)}</span>
+        <span class="breadcrumb-item" style="color:var(--text-main); font-weight:600;">${breadcrumbLabel}</span>
       </nav>
 
       <!-- Lesson Header Card -->
@@ -660,7 +667,7 @@
           </button>
         </div>
 
-        <h1 class="lesson-header-title">មេរៀនទី${kh(lesson.number)}៖ ${lesson.title}</h1>
+        <h1 class="lesson-header-title">${pageHeaderTitle}</h1>
 
         <div class="lesson-action-bar">
           <span style="font-size:0.85rem; color:var(--text-muted); display:flex; align-items:center; gap:0.4rem;">
@@ -808,7 +815,7 @@
             } else if (item.type === 'formula') {
               html += `
             <div class="formula-container">
-              <code>${escapeHtml(item.text)}</code>
+              <div class="formula-math-render">$$${escapeHtml(item.text)}$$</div>
               <button class="btn-copy-formula" onclick="window.copyFormula('${escapeForJs(item.text)}')">
                 ចម្លងរូបមន្ត (Copy)
               </button>
@@ -837,10 +844,17 @@
         });
 
         // Previous & Next Lesson Navigation
+        const prevTitle = prevLesson
+          ? (prevLesson.id.startsWith('solution-') ? prevLesson.title : 'មេរៀនទី' + kh(prevLesson.number) + '៖ ' + prevLesson.title)
+          : 'សេចក្តីផ្តើមនៃមុខវិជ្ជា';
+        const nextTitle = nextLesson
+          ? (nextLesson.id.startsWith('solution-') ? nextLesson.title : 'មេរៀនទី' + kh(nextLesson.number) + '៖ ' + nextLesson.title)
+          : 'ឯកសារយោង & ឥណទាន';
+
         const prevNav = prevLesson ? {
           url: '#' + prevLesson.id,
-          title: 'មេរៀនទី' + kh(prevLesson.number) + '៖ ' + prevLesson.title,
-          badge: 'មេរៀនមុន'
+          title: prevTitle,
+          badge: prevLesson.id.startsWith('solution-') ? 'កំណែមុន' : 'មេរៀនមុន'
         } : {
           url: '#intro',
           title: 'សេចក្តីផ្តើមនៃមុខវិជ្ជា',
@@ -849,8 +863,8 @@
 
         const nextNav = nextLesson ? {
           url: '#' + nextLesson.id,
-          title: 'មេរៀនទី' + kh(nextLesson.number) + '៖ ' + nextLesson.title,
-          badge: 'មេរៀនបន្ទាប់'
+          title: nextTitle,
+          badge: nextLesson.id.startsWith('solution-') ? 'កំណែបន្ទាប់' : 'មេរៀនបន្ទាប់'
         } : {
           url: '#references',
           title: 'ឯកសារយោង & ឥណទាន',
@@ -858,9 +872,13 @@
         };
 
         // End-of-lesson completion prompt (mirrors the header button)
+        const completePrompt = isSol
+          ? `ពិនិត្យចប់អត្រាកំណែមេរៀនទី${kh(lesson.number)} ហើយឬនៅ?`
+          : `អានចប់មេរៀនទី${kh(lesson.number)} ហើយឬនៅ?`;
+
         html += `
         <div class="lesson-complete-card">
-          <span class="lesson-complete-text">អានចប់មេរៀនទី${kh(lesson.number)} ហើយឬនៅ?</span>
+          <span class="lesson-complete-text">${completePrompt}</span>
           <button class="btn-complete-toggle ${isCompleted ? 'completed' : ''}" id="btnFooterComplete" onclick="window.toggleLessonComplete('${lesson.id}')">
             ${completeButtonInner(isCompleted)}
           </button>
@@ -869,6 +887,7 @@
 
         html += renderNavigationFooter(prevNav, nextNav);
         el.mainContent.innerHTML = html;
+        renderMath(el.mainContent);
       }
 
       // Home / Cover View
@@ -916,15 +935,18 @@
           </div>
         </div>
 
-        <!-- 3 Chapters Highlights -->
+        <!-- Chapters Highlights -->
         <div>
-          <h2 style="font-size:1.45rem; font-weight:700; margin-bottom:1.25rem;">ជំពូកទាំង ៣ នៃមុខវិជ្ជា</h2>
+          <h2 style="font-size:1.45rem; font-weight:700; margin-bottom:1.25rem;">${kh(data.chapters.length)} ជំពូក និងផ្នែកសំខាន់ៗនៃមុខវិជ្ជា</h2>
           <div class="home-chapters-grid">
     `;
 
+        const colors = ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#0d9488'];
         data.chapters.forEach((c, idx) => {
-          const color = idx === 0 ? 'var(--word-accent)' : (idx === 1 ? 'var(--excel-accent)' : 'var(--ppt-accent)');
+          const color = colors[idx % colors.length];
           const lessonsCount = data.lessons.filter(l => l.chapterId === c.id).length;
+          const countLabel = c.id === 'chapter-solutions' ? `${kh(lessonsCount)} ដំណោះស្រាយ` : `${kh(lessonsCount)} មេរៀន`;
+          const btnLabel = c.id === 'chapter-solutions' ? 'ចូលទៅកាន់អត្រាកំណែ' : 'ចូលទៅកាន់មេរៀន';
           html += `
         <div class="home-chapter-card">
           <div>
@@ -932,14 +954,14 @@
               <span style="font-size:0.8rem; font-weight:700; color:#fff; background-color:${color}; padding:0.2rem 0.6rem; border-radius:9999px;">
                 ${c.number}
               </span>
-              <span style="font-size:0.8rem; font-weight:600; color:var(--text-muted);">${kh(lessonsCount)} មេរៀន</span>
+              <span style="font-size:0.8rem; font-weight:600; color:var(--text-muted);">${countLabel}</span>
             </div>
             <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:0.5rem; color:var(--text-main);">${c.title}</h3>
             <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.7;">${c.description}</p>
           </div>
           <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border-color);">
             <a href="#${c.lessons[0]}" style="color:${color}; font-weight:600; font-size:0.9rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.35rem;">
-              ចូលទៅកាន់មេរៀន
+              ${btnLabel}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
           </div>
@@ -998,6 +1020,7 @@
     `;
 
         el.mainContent.innerHTML = html;
+        renderMath(el.mainContent);
       }
 
       // Preface View
@@ -1085,6 +1108,7 @@
         );
 
         el.mainContent.innerHTML = html;
+        renderMath(el.mainContent);
       }
 
       // Intro View
@@ -1112,6 +1136,7 @@
         );
 
         el.mainContent.innerHTML = html;
+        renderMath(el.mainContent);
       }
 
       // References View
@@ -1152,7 +1177,7 @@
             គណៈកម្មការរៀបចំ និងកែសម្រួល
           </h2>
           <p class="prose-text" style="margin-bottom:1rem;">
-            ឯកសារបង្រៀន និងវេទិកាសិក្សាឌីជីថលនេះ ត្រូវបានរៀបចំឡើងវិញ និងធ្វើបច្ចុប្បន្នភាពសម្រាប់កម្មវិធី Microsoft Office 2021 ដោយ៖
+            ឯកសារបង្រៀន និងវេទិកាសិក្សាឌីជីថលនេះ ត្រូវបានរៀបចំឡើង និងចងក្រងសម្រាប់មុខវិជ្ជា គណិតវិទ្យាសម្រាប់កុំព្យូទ័រ (Mathematics for Computing) ដោយ៖
           </p>
           <div style="padding:1.25rem; background-color:var(--primary-light); border:1px solid var(--primary-border); border-radius:12px; font-size:1.1rem; font-weight:700; color:var(--primary);">
             ${data.meta.author}
@@ -1166,20 +1191,36 @@
 
         const lastLesson = data.lessons && data.lessons.length > 0 ? data.lessons[data.lessons.length - 1] : null;
         html += renderNavigationFooter(
-          lastLesson ? { url: `#${lastLesson.id}`, title: `មេរៀនទី${kh(lastLesson.number)}៖ ${lastLesson.title}`, badge: 'មេរៀនមុន' } : null,
+          lastLesson ? { url: `#${lastLesson.id}`, title: lastLesson.id.startsWith('solution-') ? lastLesson.title : `មេរៀនទី${kh(lastLesson.number)}៖ ${lastLesson.title}`, badge: 'មេរៀនមុន' } : null,
           { url: '#home', title: 'ទំព័រដើម & ក្របសៀវភៅ', badge: 'ត្រឡប់ទៅដើម' }
         );
 
         el.mainContent.innerHTML = html;
+        renderMath(el.mainContent);
+      }
+
+      // Mathematical formula rendering with KaTeX
+      function renderMath(container) {
+        if (typeof renderMathInElement === 'function') {
+          renderMathInElement(container || el.mainContent || document.body, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\\(', right: '\\)', display: false },
+              { left: '\\[', right: '\\]', display: true }
+            ],
+            throwOnError: false
+          });
+        }
       }
 
       // Formatting Helpers
       function formatInlineContent(str) {
         if (!str) return '';
 
-        // First preserve allowed formatting tags: <strong>, </strong>, <b>, </b>, <em>, </i>
+        // First preserve allowed formatting tags: <strong>, </strong>, <b>, </b>, <em>, </i>, <a>
         const allowed = [];
-        let clean = str.replace(/<\/?(?:strong|b|em|i)>/gi, function (match) {
+        let clean = str.replace(/<\/?(?:strong|b|em|i|a)[^>]*>/gi, function (match) {
           allowed.push(match);
           return '___SAFE_TAG_' + (allowed.length - 1) + '___';
         });
@@ -1193,6 +1234,11 @@
         allowed.forEach(function (tag, idx) {
           res = res.replace('___SAFE_TAG_' + idx + '___', tag);
         });
+
+        // Format markdown bold **text**
+        res = res.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        // Format markdown link [text](url)
+        res = res.replace(/\[([^\]]+)\]\((#[^)]+)\)/g, '<a href="$2" class="solution-link">$1</a>');
 
         // Format Ctrl + Shift + X / Ctrl + X / Alt + X / F1-F12 keys into <kbd> badges without double nesting
         const kbdTokens = [];
@@ -1258,7 +1304,9 @@
       function buildSearchIndex(data) {
         const index = [];
         data.lessons.forEach(lesson => {
-          const lessonTitle = `មេរៀនទី${kh(lesson.number)}៖ ${toPlainText(lesson.title)}`;
+          const lessonTitle = lesson.id.startsWith('solution-')
+            ? toPlainText(lesson.title)
+            : `មេរៀនទី${kh(lesson.number)}៖ ${toPlainText(lesson.title)}`;
           index.push({
             lessonId: lesson.id, sectionIdx: null, title: lessonTitle,
             text: toPlainText([lesson.title, ...(lesson.objectives || [])].join(' '))
@@ -1298,15 +1346,17 @@
         if (!query) {
           // Show sample suggested lessons
           let html = `<div style="padding:0.75rem 1rem; font-size:0.8rem; font-weight:700; color:var(--text-subtle); text-transform:uppercase;">មេរៀនណែនាំ</div>`;
-          data.lessons.slice(0, 8).forEach(l => {
+          data.lessons.slice(0, 6).forEach(l => {
+            const label = l.id.startsWith('solution-') ? l.title : `មេរៀនទី${kh(l.number)}៖ ${l.title}`;
             html += `
           <li class="search-result-item" onclick="window.jumpToResult('${l.id}')">
-            <div class="result-title">មេរៀនទី${kh(l.number)}៖ ${l.title}</div>
+            <div class="result-title">${label}</div>
             <div class="result-snippet">${l.chapterTitle}</div>
           </li>
         `;
           });
           el.searchResults.innerHTML = html;
+          renderMath(el.searchResults);
           return;
         }
 
@@ -1323,8 +1373,10 @@
         let html = '';
         matches.forEach(item => {
           const owner = data.lessons.find(l => l.id === item.lessonId);
+          const isOwnerSol = owner && owner.id.startsWith('solution-');
+          const ownerTitle = owner ? (isOwnerSol ? owner.title : `មេរៀនទី${kh(owner.number)}៖ ${escapeHtml(toPlainText(owner.title))}`) : '';
           const ownerLabel = owner && item.sectionIdx !== null
-            ? `<div class="result-lesson-label">មេរៀនទី${kh(owner.number)}៖ ${escapeHtml(toPlainText(owner.title))}</div>`
+            ? `<div class="result-lesson-label">${ownerTitle}</div>`
             : '';
           html += `
         <li class="search-result-item" onclick="window.jumpToResult('${item.lessonId}', ${item.sectionIdx === null ? 'null' : item.sectionIdx})">
@@ -1335,6 +1387,7 @@
       `;
         });
         el.searchResults.innerHTML = html;
+        renderMath(el.searchResults);
       }
 
       function highlightQuery(text, query) {

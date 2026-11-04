@@ -5,8 +5,8 @@
   /* Work Sans (Latin only) comes first so English words, digits and brackets all use one font
      with real bold weights; Khmer characters fall through to Khmer OS Siemreap / Siemreap.
      (Siemreap ships only a regular weight and its own digits, which made "2021" look un-bolded.) */
-  --font-khmer: 'Work Sans', 'Khmer OS Siemreap', 'Siemreap', 'Kantumruy Pro', 'Leelawadee UI', 'Khmer UI', 'Khmer Sangam MN', 'Noto Sans Khmer', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading: 'Work Sans', 'Khmer OS Siemreap', 'Siemreap', 'Kantumruy Pro', 'Leelawadee UI', 'Khmer UI', 'Khmer Sangam MN', 'Noto Sans Khmer', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-khmer: 'Kantumruy Pro', 'Work Sans', 'Noto Sans Khmer', 'Khmer OS Battambang', 'Khmer OS Siemreap', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: 'Kantumruy Pro', 'Work Sans', 'Noto Sans Khmer', 'Khmer OS Battambang', 'Khmer OS Siemreap', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
 
   --font-scale: 1;
@@ -520,16 +520,27 @@ button, input, select, textarea {
   letter-spacing: 0.02em;
 }
 
+.chapter-badge.chap-1,
 .chapter-badge.word {
-  background-color: var(--word-accent);
+  background-color: #2563eb;
 }
 
+.chapter-badge.chap-2,
 .chapter-badge.excel {
-  background-color: var(--excel-accent);
+  background-color: #10b981;
 }
 
+.chapter-badge.chap-3,
 .chapter-badge.ppt {
-  background-color: var(--ppt-accent);
+  background-color: #f59e0b;
+}
+
+.chapter-badge.chap-4 {
+  background-color: #8b5cf6;
+}
+
+.chapter-badge.chap-sol {
+  background-color: #0d9488;
 }
 
 .chapter-count-text {
@@ -2567,3 +2578,63 @@ button, input, select, textarea {
     margin-bottom: 1rem !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Mathematics, KaTeX & Truth Tables Custom Enhancements
+   --------------------------------------------------------------------------- */
+.katex {
+  font-size: 1.08em;
+  text-rendering: auto;
+}
+
+.katex-display {
+  margin: 0.9rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0.25rem;
+}
+
+/* Truth tables & mathematical data tables styling */
+.data-table th,
+.data-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.data-table td:has(.katex) {
+  padding: 0.65rem 0.75rem;
+}
+
+.solution-link,
+a.solution-link {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.solution-link:hover {
+  color: var(--primary-hover);
+}
+
+.formula-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  margin: 0.9rem 0;
+  overflow-x: auto;
+}
+
+.formula-math-render {
+  font-size: 1.15rem;
+  overflow-x: auto;
+}
+

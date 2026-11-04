@@ -1,7 +1,7 @@
 {
-  "name": "កុំព្យូទ័រអនុវត្តន៍ក្នុងការិយាល័យ (Office 2021)",
-  "short_name": "Office 2021",
-  "description": "វេទិកាសិក្សាឌីជីថល កុំព្យូទ័រអនុវត្តន៍ក្នុងការិយាល័យ (Microsoft Word, Excel, PowerPoint 2021) សម្រាប់និស្សិត RPITSSR",
+  "name": "គណិតវិទ្យាសម្រាប់កុំព្យូទ័រ (Mathematics for Computing)",
+  "short_name": "គណិតវិទ្យា",
+  "description": "វេទិកាសិក្សាឌីជីថល គណិតវិទ្យាសម្រាប់កុំព្យូទ័រ (Mathematics for Computing) សម្រាប់និស្សិត RPITSSR",
   "lang": "km",
   "start_url": "./",
   "scope": "./",

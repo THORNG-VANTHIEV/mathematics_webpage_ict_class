@@ -1,19 +1,16 @@
 /*
  * Service worker: lets students keep studying without internet.
  *
- * - The page, CSS, JS and lesson text are saved on first visit (SHELL_FILES).
- * - Lesson screenshots are saved the first time a student opens that lesson,
+ * - The page, CSS, JS, KaTeX and lesson text are saved on first visit (SHELL_FILES).
+ * - Lesson diagrams and circuit images are saved the first time a student opens that lesson,
  *   so every lesson viewed once online also works offline later.
  * - Page/CSS/JS are fetched fresh when online (network first), so edits show up
  *   right away; the saved copy is only used when offline.
- *
- * Bump CACHE_VERSION after changing the shell file list OR replacing lesson images
- * (images are cache-first, so students would otherwise keep seeing old screenshots).
  */
-const CACHE_VERSION = 'v3'; // v3: all page images converted to WebP
-const SHELL_CACHE = `office2021-shell-${CACHE_VERSION}`;
-const IMAGE_CACHE = `office2021-images-${CACHE_VERSION}`;
-const FONT_CACHE = `office2021-fonts-${CACHE_VERSION}`;
+const CACHE_VERSION = 'v4';
+const SHELL_CACHE = `math-shell-${CACHE_VERSION}`;
+const IMAGE_CACHE = `math-images-${CACHE_VERSION}`;
+const FONT_CACHE = `math-fonts-${CACHE_VERSION}`;
 
 const SHELL_FILES = [
   './',
@@ -26,7 +23,10 @@ const SHELL_FILES = [
   'images/logo.png',
   'images/cover.webp',
   'images/icons/icon-192.png',
-  'images/icons/icon-512.png'
+  'images/icons/icon-512.png',
+  'vendor/katex/katex.min.css',
+  'vendor/katex/katex.min.js',
+  'vendor/katex/auto-render.min.js'
 ];
 
 self.addEventListener('install', (event) => {
@@ -47,15 +47,13 @@ self.addEventListener('activate', (event) => {
 async function networkFirst(request) {
   const cache = await caches.open(SHELL_CACHE);
   try {
-    // 'no-cache' = always ask the server whether the file changed (cheap 304 if not),
-    // so teachers' edits reach students without waiting for the browser cache to expire
     const response = await fetch(request, { cache: 'no-cache' });
     if (response.ok) cache.put(request, response.clone());
     return response;
   } catch (err) {
     const cached = await cache.match(request, { ignoreSearch: true });
     if (cached) return cached;
-    if (request.mode === 'navigate') return cache.match('index.html');
+    if (request.mode === 'navigate') return (await cache.match('index.html')) || (await cache.match('./'));
     throw err;
   }
 }
@@ -65,7 +63,6 @@ async function cacheFirst(request, cacheName) {
   const cached = await cache.match(request);
   if (cached) return cached;
   const response = await fetch(request);
-  // opaque (cross-origin font) responses have status 0 but are still usable
   if (response.ok || response.type === 'opaque') cache.put(request, response.clone());
   return response;
 }
@@ -75,15 +72,15 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
 
-  if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') {
+  if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com' || url.pathname.includes('/vendor/katex/fonts/')) {
     event.respondWith(cacheFirst(request, FONT_CACHE));
     return;
   }
-  if (url.origin !== self.location.origin) return;
 
-  if (url.pathname.includes('/images/')) {
+  if (url.pathname.includes('/images/lessons/')) {
     event.respondWith(cacheFirst(request, IMAGE_CACHE));
-  } else {
-    event.respondWith(networkFirst(request));
+    return;
   }
+
+  event.respondWith(networkFirst(request));
 });

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<title>Book Cover</title>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600;700;800&family=Work+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 1200px; height: 1700px; overflow: hidden; }
+  body {
+    font-family: 'Work Sans', 'Kantumruy Pro', sans-serif;
+    color: #f8fafc;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(37,99,235,.45), transparent 50%),
+      radial-gradient(circle at 15% 85%, rgba(16,185,129,.25), transparent 45%),
+      linear-gradient(145deg, #070d18 0%, #0d1b3e 45%, #172554 100%);
+    box-sizing: border-box;
+    padding: 90px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+  .bg-symbols {
+    position: absolute; right: 60px; top: 380px;
+    font-family: monospace; font-size: 80px;
+    color: rgba(255,255,255,0.035);
+    user-select: none; pointer-events: none;
+    line-height: 1.25;
+  }
+  .header {
+    display: flex; align-items: center; gap: 24px;
+    padding-bottom: 40px; border-bottom: 2px solid rgba(255,255,255,0.12);
+  }
+  .logo {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: #fff; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+  .logo img { width: 95px; height: 95px; object-fit: contain; }
+  .inst-kh { font: 700 26px/1.4 'Kantumruy Pro', sans-serif; color: #f1f5f9; }
+  .inst-en { font: 600 18px 'Work Sans', sans-serif; color: #94a3b8; }
+  
+  .main-content { margin-top: 50px; z-index: 1; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 22px; border-radius: 999px;
+    background: rgba(37,99,235,0.2); border: 1.5px solid rgba(96,165,250,0.3);
+    font: 700 22px 'Kantumruy Pro', sans-serif; color: #93c5fd;
+    margin-bottom: 30px;
+  }
+  h1 {
+    font: 800 84px/1.25 'Kantumruy Pro', sans-serif;
+    margin: 0 0 16px;
+    background: linear-gradient(135deg, #ffffff 40%, #bfdbfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    font: 700 40px 'Work Sans', sans-serif;
+    color: #60a5fa;
+    margin: 0 0 45px;
+  }
+  .desc {
+    font: 400 24px/1.7 'Kantumruy Pro', sans-serif;
+    color: #cbd5e1;
+    max-width: 880px;
+    margin-bottom: 50px;
+  }
+  .modules-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
+    max-width: 900px; margin-bottom: 50px;
+  }
+  .mod-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 18px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .mod-num {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font: 700 20px 'Work Sans', sans-serif; color: #fff;
+  }
+  .m1 { background: #2563eb; }
+  .m2 { background: #059669; }
+  .m3 { background: #d97706; }
+  .m4 { background: #7c3aed; }
+  .mod-title { font: 700 20px 'Kantumruy Pro', sans-serif; color: #f8fafc; }
+
+  .footer {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-top: 40px; border-top: 2px solid rgba(255,255,255,0.12);
+    z-index: 1;
+  }
+  .author-info { font: 600 24px 'Kantumruy Pro', sans-serif; color: #f1f5f9; }
+  .author-name { font: 700 28px 'Kantumruy Pro', sans-serif; color: #60a5fa; margin-top: 6px; }
+  .pub-year { font: 600 24px 'Kantumruy Pro', sans-serif; color: #94a3b8; }
+</style>
+</head>
+<body>
+  <div class="bg-symbols">
+    ∀x ∈ S<br>
+    P ∧ Q → R<br>
+    A ∪ B = B ∪ A<br>
+    1010₂ = 10₁₀<br>
+    ∑ i = n(n+1)/2
+  </div>
+
+  <div class="header">
+    <div class="logo"><img src="../images/logo.png" alt="RPITSSR"></div>
+    <div>
+      <div class="inst-kh">វិទ្យាស្ថានពហុបច្ចេកទេសភូមិភាគតេជោសែនសៀមរាប</div>
+      <div class="inst-en">Regional Polytechnic Institute Techo Sen Siem Reap</div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="badge">ឯកសារបង្រៀន & សិក្សាស្រាវជ្រាវកម្រិតឧត្តមសិក្សា</div>
+    <h1>គណិតវិទ្យា<br>សម្រាប់កុំព្យូទ័រ</h1>
+    <div class="subtitle">Mathematics for Computing</div>
+    <div class="desc">
+      គ្រឹះនៃវិទ្យាសាស្ត្រកុំព្យូទ័រ៖ តក្កវិទ្យា, ទ្រឹស្តីសំណុំ, ពីជគណិតប៊ូលៀន, សៀគ្វីឌីជីថល,
+      ប្រព័ន្ធរាប់, ការរក្សាទុកទិន្នន័យក្នុងកុំព្យូទ័រ និងវិធីសាស្ត្រសម្រាយបញ្ជាក់។
+    </div>
+
+    <div class="modules-grid">
+      <div class="mod-card">
+        <div class="mod-num m1">01</div>
+        <div class="mod-title">តក្កវិទ្យា & ទ្រឹស្តីសំណុំ</div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-num m2">02</div>
+        <div class="mod-title">ពីជគណិតប៊ូលៀន & សៀគ្វី</div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-num m3">03</div>
+        <div class="mod-title">ប្រព័ន្ធរាប់ & នព្វន្តកុំព្យូទ័រ</div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-num m4">04</div>
+        <div class="mod-title">វិធីសាស្ត្រសម្រាយបញ្ជាក់</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="author-info">
+      <div>រៀបចំ និងចងក្រងដោយ</div>
+      <div class="author-name">លោកគ្រូ ថង វ៉ាន់ធៀវ</div>
+    </div>
+    <div class="pub-year">
+      សៀមរាប, ឆ្នាំ២០២៦
+    </div>
+  </div>
+</body>
+</html>
