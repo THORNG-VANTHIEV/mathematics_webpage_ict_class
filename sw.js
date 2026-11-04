@@ -7,7 +7,7 @@
  * - Page/CSS/JS are fetched fresh when online (network first), so edits show up
  *   right away; the saved copy is only used when offline.
  */
-const CACHE_VERSION = 'v13';
+const CACHE_VERSION = 'v14';
 const SHELL_CACHE = `math-shell-${CACHE_VERSION}`;
 const IMAGE_CACHE = `math-images-${CACHE_VERSION}`;
 const FONT_CACHE = `math-fonts-${CACHE_VERSION}`;

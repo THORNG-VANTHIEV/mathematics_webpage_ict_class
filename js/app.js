@@ -1335,6 +1335,9 @@
         // Prevent awkward line wrapping inside parenthesized Latin terms (e.g. "( Logic )", "( Set Theory )")
         res = res.replace(/(^|\s|[\u1780-\u17FF])\(([A-Za-z0-9\s&,.\-\/]{2,35})\)/g, '$1<span class="nowrap-paren">($2)</span>');
 
+        // Prevent Khmer punctuation marks (សញ្ញាខណ្ឌ ។, បរិយោសាន ៕, ចុចពីរ ៖) from dropping onto a new line alone
+        res = res.replace(/[\s\u200B]+([។៕៖])/g, '$1');
+
         // Format Ctrl + Shift + X / Ctrl + X / Alt + X / F1-F12 keys into <kbd> badges without double nesting
         const kbdTokens = [];
         res = res.replace(/\b(Ctrl|Alt|Shift|Windows)\s*\+\s*(?:(Ctrl|Alt|Shift)\s*\+\s*)?([A-Za-z0-9\+]+)\b/gi, function (match) {
