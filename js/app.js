@@ -184,6 +184,22 @@
           el.btnFontReset.classList.toggle('active', Math.abs(scale - 1) < 0.05);
           el.btnFontInc.classList.toggle('active', scale > 1.05);
         }
+
+        // Update mobile reader popover buttons & badge
+        const mDec = document.getElementById('mBtnFontDec');
+        const mReset = document.getElementById('mBtnFontReset');
+        const mInc = document.getElementById('mBtnFontInc');
+        const mBadge = document.getElementById('readerFontBadge');
+
+        if (mDec && mReset && mInc) {
+          mDec.classList.toggle('active', scale < 0.98);
+          mReset.classList.toggle('active', Math.abs(scale - 1) < 0.05);
+          mInc.classList.toggle('active', scale > 1.05);
+        }
+        if (mBadge) {
+          mBadge.textContent = scale < 0.98 ? '៩២%' : (scale > 1.05 ? '១១៥%' : '១០០%');
+        }
+
         setTimeout(autoScaleTables, 60);
       }
 
@@ -210,7 +226,7 @@
           el.themeToggleBtn.addEventListener('click', toggleTheme);
         }
 
-        // Font scale buttons
+        // Font scale buttons (Desktop)
         if (el.btnFontDec) {
           el.btnFontDec.addEventListener('click', () => applyFontScale(0.92));
         }
@@ -219,6 +235,26 @@
         }
         if (el.btnFontInc) {
           el.btnFontInc.addEventListener('click', () => applyFontScale(1.15));
+        }
+
+        // Font scale buttons (Mobile Reader Popover)
+        const mDec = document.getElementById('mBtnFontDec');
+        const mReset = document.getElementById('mBtnFontReset');
+        const mInc = document.getElementById('mBtnFontInc');
+        if (mDec) mDec.addEventListener('click', () => applyFontScale(0.92));
+        if (mReset) mReset.addEventListener('click', () => applyFontScale(1));
+        if (mInc) mInc.addEventListener('click', () => applyFontScale(1.15));
+
+        // Mobile Reader popover toggle
+        const mobReaderBtn = document.getElementById('mobileReaderBtn');
+        const readerPopover = document.getElementById('readerPopover');
+        if (mobReaderBtn && readerPopover) {
+          mobReaderBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = readerPopover.classList.contains('active');
+            readerPopover.classList.toggle('active', !isOpen);
+            mobReaderBtn.classList.toggle('active', !isOpen);
+          });
         }
 
         // Sidebar Drawer (Mobile) & Collapse / Minimize (Desktop)
@@ -335,6 +371,22 @@
             closeSearchModal();
             closeLightbox();
             window.closeTableModal();
+            const popover = document.getElementById('readerPopover');
+            const btn = document.getElementById('mobileReaderBtn');
+            if (popover) popover.classList.remove('active');
+            if (btn) btn.classList.remove('active');
+          }
+        });
+
+        // Close reader popover on outside click
+        document.addEventListener('click', (e) => {
+          const popover = document.getElementById('readerPopover');
+          const btn = document.getElementById('mobileReaderBtn');
+          if (popover && popover.classList.contains('active')) {
+            if (!popover.contains(e.target) && !btn?.contains(e.target)) {
+              popover.classList.remove('active');
+              if (btn) btn.classList.remove('active');
+            }
           }
         });
 
