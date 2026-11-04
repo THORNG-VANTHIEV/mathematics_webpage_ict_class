@@ -110,26 +110,17 @@
           <span class="aa-icon-text">aA</span>
         </button>
 
-        <!-- Floating Reader Settings Popover -->
+        <!-- Floating Reader Settings Popover (Compact iOS Segmented Style) -->
         <div class="reader-popover" id="readerPopover">
           <div class="reader-popover-header">
-            <span class="reader-popover-title">ទំហំអក្សរអាន</span>
+            <span class="reader-popover-title">ទំហំអក្សរ</span>
             <span class="reader-popover-badge" id="readerFontBadge">១០០%</span>
           </div>
 
-          <div class="reader-font-options">
-            <button class="reader-font-opt-btn" id="mBtnFontDec" type="button">
-              <span class="opt-a">A-</span>
-              <span class="opt-sub">តូច 92%</span>
-            </button>
-            <button class="reader-font-opt-btn active" id="mBtnFontReset" type="button">
-              <span class="opt-a">A</span>
-              <span class="opt-sub">ដើម 100%</span>
-            </button>
-            <button class="reader-font-opt-btn" id="mBtnFontInc" type="button">
-              <span class="opt-a">A+</span>
-              <span class="opt-sub">ធំ 115%</span>
-            </button>
+          <div class="reader-segmented-bar">
+            <button class="reader-segment-btn" id="mBtnFontDec" type="button" aria-label="បន្ថយទំហំ (92%)">A-</button>
+            <button class="reader-segment-btn active" id="mBtnFontReset" type="button" aria-label="ទំហំដើម (100%)">A</button>
+            <button class="reader-segment-btn" id="mBtnFontInc" type="button" aria-label="ពង្រីកទំហំ (115%)">A+</button>
           </div>
         </div>
       </div>

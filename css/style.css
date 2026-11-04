@@ -357,22 +357,22 @@ button, input, select, textarea {
   line-height: 1;
 }
 
-/* Floating Reader Settings Popover */
+/* Floating Reader Settings Popover (Compact iOS Segmented Style) */
 .reader-popover {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
   z-index: 1000;
-  width: 260px;
+  width: 195px;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 14px;
-  box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.25);
-  padding: 0.85rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.22);
+  padding: 0.55rem 0.6rem;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px) scale(0.96);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(-6px) scale(0.96);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
@@ -387,73 +387,76 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.65rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.4rem;
+  padding: 0 0.15rem;
 }
 
 .reader-popover-title {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.74rem;
+  font-weight: 600;
   color: var(--text-muted);
 }
 
 .reader-popover-badge {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: var(--primary);
   background-color: rgba(37, 99, 235, 0.1);
-  padding: 0.15rem 0.5rem;
+  padding: 0.08rem 0.4rem;
   border-radius: 9999px;
   font-family: var(--font-mono);
+  line-height: 1.2;
 }
 
-.reader-font-options {
+.reader-segmented-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.45rem;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
 }
 
-.reader-font-opt-btn {
-  background-color: var(--bg-subtle);
-  border: 1.5px solid var(--border-color);
-  border-radius: 10px;
-  padding: 0.55rem 0.25rem;
+.reader-segment-btn {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  height: 32px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
   cursor: pointer;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
   transition: all 0.15s ease;
+  user-select: none;
+}
+
+.reader-segment-btn:hover {
   color: var(--text-main);
 }
 
-.reader-font-opt-btn:hover {
-  border-color: var(--primary);
-}
-
-.reader-font-opt-btn.active {
-  background-color: rgba(37, 99, 235, 0.12);
-  border-color: var(--primary);
+.reader-segment-btn.active {
+  background-color: var(--bg-surface);
   color: var(--primary);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-.reader-font-opt-btn .opt-a {
-  font-family: var(--font-heading);
+#mBtnFontDec {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+#mBtnFontReset {
   font-size: 0.95rem;
   font-weight: 700;
 }
 
-.reader-font-opt-btn .opt-sub {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.reader-font-opt-btn.active .opt-sub {
-  color: var(--primary);
-  font-weight: 600;
+#mBtnFontInc {
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
 .progress-pill {
