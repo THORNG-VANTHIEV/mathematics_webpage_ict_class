@@ -124,6 +124,11 @@
         el.lightboxImage = document.getElementById('lightboxImage');
         el.lightboxCaption = document.getElementById('lightboxCaption');
         el.closeLightboxBtn = document.getElementById('closeLightboxBtn');
+        el.tableModal = document.getElementById('tableModal');
+        el.tableModalTitle = document.getElementById('tableModalTitle');
+        el.tableModalBody = document.getElementById('tableModalBody');
+        el.closeTableModalBtn = document.getElementById('closeTableModalBtn');
+        el.tableModalBackdrop = document.getElementById('tableModalBackdrop');
         el.progressFill = document.getElementById('progressFill');
         el.progressText = document.getElementById('progressText');
         el.toastContainer = document.getElementById('toastContainer');
@@ -179,6 +184,7 @@
           el.btnFontReset.classList.toggle('active', Math.abs(scale - 1) < 0.05);
           el.btnFontInc.classList.toggle('active', scale > 1.05);
         }
+        setTimeout(autoScaleTables, 60);
       }
 
       function applyTheme(theme) {
@@ -328,6 +334,7 @@
           } else if (e.key === 'Escape') {
             closeSearchModal();
             closeLightbox();
+            window.closeTableModal();
           }
         });
 
@@ -340,6 +347,21 @@
             if (e.target === el.lightboxModal) closeLightbox();
           });
         }
+
+        // Table modal close
+        if (el.closeTableModalBtn) {
+          el.closeTableModalBtn.addEventListener('click', window.closeTableModal);
+        }
+        if (el.tableModalBackdrop) {
+          el.tableModalBackdrop.addEventListener('click', window.closeTableModal);
+        }
+
+        // Auto-scale tables on window resize
+        let tableResizeTimer = null;
+        window.addEventListener('resize', () => {
+          clearTimeout(tableResizeTimer);
+          tableResizeTimer = setTimeout(autoScaleTables, 120);
+        });
       }
 
       function navigatePrevLesson() {
@@ -723,10 +745,22 @@
             } else if (item.type === 'subtopic') {
               html += `<h4 class="subtopic-heading">${formatInlineContent(item.title)}</h4>`;
             } else if (item.type === 'table') {
+              const tableTitle = item.title ? formatInlineContent(item.title) : '';
               html += `
             <div class="table-container">
-              ${item.title ? `<div class="table-header-title">${formatInlineContent(item.title)}</div>` : ''}
-              <div style="overflow-x:auto;">
+              <div class="table-header-bar">
+                ${tableTitle ? `<div class="table-header-title">${tableTitle}</div>` : '<div class="table-header-spacer"></div>'}
+                <button class="table-zoom-btn" type="button" title="ពង្រីកតារាងពេញអេក្រង់ (Fullscreen Table)" onclick="window.openTableModal(this)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="15 3 21 3 21 9"/>
+                    <polyline points="9 21 3 21 3 15"/>
+                    <line x1="21" y1="3" x2="14" y2="10"/>
+                    <line x1="3" y1="21" x2="10" y2="14"/>
+                  </svg>
+                  <span class="table-zoom-text">ពង្រីក</span>
+                </button>
+              </div>
+              <div class="table-responsive-wrapper">
                 <table class="data-table">
                   ${item.headers && item.headers.length ? `<thead><tr>${item.headers.map(h => tableCell('th', h)).join('')}</tr></thead>` : ''}
                   <tbody>
@@ -888,6 +922,7 @@
         html += renderNavigationFooter(prevNav, nextNav);
         el.mainContent.innerHTML = html;
         renderMath(el.mainContent);
+        autoScaleTables();
       }
 
       // Home / Cover View
@@ -1424,6 +1459,68 @@
       function closeLightbox() {
         el.lightboxModal.classList.remove('active');
       }
+
+      // Auto-scale tables on mobile view so the entire table fits into screen without horizontal scrollbars
+      function autoScaleTables() {
+        const isMobile = window.innerWidth <= 768;
+        const wrappers = document.querySelectorAll('.table-responsive-wrapper');
+
+        wrappers.forEach(wrap => {
+          const table = wrap.querySelector('.data-table');
+          if (!table) return;
+
+          // Clear previous scale & height to measure unscaled dimensions
+          table.style.zoom = '';
+          table.style.transform = '';
+          table.style.transformOrigin = '';
+          wrap.style.height = '';
+          wrap.style.overflowX = isMobile ? 'hidden' : 'auto';
+
+          if (!isMobile) return;
+
+          // Measure container and content widths
+          const containerWidth = wrap.clientWidth;
+          const tableWidth = table.scrollWidth;
+
+          if (containerWidth > 0 && tableWidth > containerWidth) {
+            const ratio = (containerWidth / tableWidth);
+            if (ratio < 0.99) {
+              if ('zoom' in table.style) {
+                table.style.zoom = ratio;
+              } else {
+                table.style.transform = `scale(${ratio})`;
+                table.style.transformOrigin = 'top left';
+                wrap.style.height = `${Math.ceil(table.offsetHeight * ratio)}px`;
+              }
+            }
+          }
+        });
+      }
+
+      // Fullscreen Table View Modal
+      window.openTableModal = function (btn) {
+        const container = btn.closest('.table-container');
+        if (!container || !el.tableModal) return;
+        const table = container.querySelector('.data-table');
+        const titleEl = container.querySelector('.table-header-title');
+        if (!table) return;
+
+        el.tableModalTitle.textContent = titleEl ? titleEl.textContent.trim() : 'តារាងទិន្នន័យ (Table View)';
+        el.tableModalBody.innerHTML = '';
+        const cloned = table.cloneNode(true);
+        // Clear mobile zoom/scale so modal displays table at 100% full crisp size
+        cloned.style.zoom = '';
+        cloned.style.transform = '';
+        el.tableModalBody.appendChild(cloned);
+        el.tableModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+
+      window.closeTableModal = function () {
+        if (!el.tableModal) return;
+        el.tableModal.classList.remove('active');
+        document.body.style.overflow = '';
+      };
 
       window.copyFormula = function (formula) {
         navigator.clipboard.writeText(formula).then(() => {

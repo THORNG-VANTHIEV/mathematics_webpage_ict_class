@@ -1051,14 +1051,55 @@ button, input, select, textarea {
   box-shadow: var(--shadow-sm);
 }
 
-.table-header-title {
-  padding: 0.85rem 1.25rem;
+.table-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
   background-color: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-color);
+  gap: 0.75rem;
+}
+
+.table-header-title {
   font-family: var(--font-heading);
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--primary);
-  border-bottom: 1px solid var(--border-color);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.table-header-spacer {
+  flex: 1;
+}
+
+.table-zoom-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.table-zoom-btn:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background-color: rgba(37, 99, 235, 0.08);
+}
+
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .data-table {
@@ -2355,16 +2396,49 @@ button, input, select, textarea {
     display: none;
   }
 
-  /* --- tables & formulas --- */
+  /* --- tables & formulas on mobile --- */
   .table-container {
-    margin: 0.25rem 0;
+    margin: 0.6rem 0 1rem 0;
+    border-radius: 10px;
+  }
+
+  .table-header-bar {
+    padding: 0.45rem 0.65rem;
+  }
+
+  .table-header-title {
+    font-size: 0.85rem;
+  }
+
+  .table-zoom-btn {
+    padding: 0.2rem 0.45rem;
+    font-size: 0.72rem;
+  }
+
+  .table-responsive-wrapper {
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll bar on mobile */
+  }
+
+  .data-table {
+    width: 100%;
+    font-size: 0.82rem;
   }
 
   .data-table th,
   .data-table td {
-    padding: 0.55rem 0.65rem;
-    font-size: 0.85rem;
-    line-height: 1.6;
+    padding: 0.35rem 0.35rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .data-table .katex {
+    font-size: 0.88em;
+  }
+
+  .data-table .katex-display {
+    margin: 0.2rem 0;
+    padding: 0.1rem 0;
   }
 
   .formula-container {
@@ -2637,4 +2711,108 @@ a.solution-link {
   font-size: 1.15rem;
   overflow-x: auto;
 }
+
+/* Table Fullscreen Modal */
+.table-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  padding: 1rem;
+}
+
+.table-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.table-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.table-modal-box {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 960px;
+  max-height: 88vh;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.table-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+  background-color: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.table-modal-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.table-modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.table-modal-close-btn:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.table-modal-body {
+  padding: 1.25rem;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+
+.table-modal-body .data-table {
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.table-modal-body .data-table th,
+.table-modal-body .data-table td {
+  padding: 0.65rem 0.85rem;
+}
+
 
