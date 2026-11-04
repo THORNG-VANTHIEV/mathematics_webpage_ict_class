@@ -2700,11 +2700,6 @@ button, input, select, textarea {
     font-size: 0.8rem !important;
   }
 
-  .lesson-action-bar .btn-copy-formula {
-    white-space: nowrap;
-    padding: 0.4rem 0.65rem;
-  }
-
   #btnHeaderComplete {
     order: 4;
     width: 100%;
