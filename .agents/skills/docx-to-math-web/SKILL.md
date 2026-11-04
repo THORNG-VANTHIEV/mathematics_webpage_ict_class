@@ -91,3 +91,4 @@ git push origin main
 1. **Khmer Typography:** Always retain `'Kantumruy Pro'` as the primary font in `css/style.css` to prevent subscript and vowel glyph overlapping.
 2. **Offline KaTeX:** Do not point KaTeX script tags to external CDNs. Always load from `vendor/katex/katex.min.js` to support completely offline study.
 3. **Zero-Width Spaces:** When searching Khmer text, always strip `\u200b`, `\u200c`, and `\ufeff` so user typed keywords match document text.
+

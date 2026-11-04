@@ -67,3 +67,4 @@ This document details how OpenXML Math Markup Language (OMML) elements from Micr
 | $a \mid b$ | ចែកដាច់ ($a$ ចែកដាច់ $b$) | `a \mid b` | `\mid` |
 | $a \nmid b$ | មិនចែកដាច់ | `a \nmid b` | `\nmid` |
 | $\blacksquare$ or $\text{Q.E.D.}$ | សញ្ញាបញ្ជាក់ចប់សម្រាយបញ្ជាក់ | `\blacksquare` | `\blacksquare` |
+

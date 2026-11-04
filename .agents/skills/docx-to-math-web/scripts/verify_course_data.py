@@ -86,3 +86,4 @@ def verify(course_data_path="js/course-data.js"):
 
 if __name__ == "__main__":
     sys.exit(verify())
+
