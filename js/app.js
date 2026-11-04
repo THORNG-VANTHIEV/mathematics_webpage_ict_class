@@ -936,7 +936,7 @@
         const prevNav = prevLesson ? {
           url: '#' + prevLesson.id,
           title: prevTitle,
-          badge: prevLesson.id.startsWith('solution-') ? 'កំណែមុន' : 'មេរៀនមុន'
+          badge: prevLesson.id.startsWith('solution-') ? 'កំណែមុន' : 'មុន'
         } : {
           url: '#intro',
           title: 'សេចក្តីផ្តើមនៃមុខវិជ្ជា',
@@ -946,7 +946,7 @@
         const nextNav = nextLesson ? {
           url: '#' + nextLesson.id,
           title: nextTitle,
-          badge: nextLesson.id.startsWith('solution-') ? 'កំណែបន្ទាប់' : 'មេរៀនបន្ទាប់'
+          badge: nextLesson.id.startsWith('solution-') ? 'កំណែបន្ទាប់' : 'បន្ទាប់'
         } : {
           url: '#references',
           title: 'ឯកសារយោង & ឥណទាន',
@@ -1108,23 +1108,26 @@
 
       // Preface View
       // Bottom Navigation Footer Helper
+      function cleanNavTitle(title) {
+        if (!title) return '';
+        let t = title.replace(/\(\s+/g, '(').replace(/\s+\)/g, ')');
+        t = t.replace(/\(([^)]+)\)/g, (m, inner) => '(' + inner.replace(/\s+/g, '\u00A0') + ')');
+        return t;
+      }
+
       function renderNavigationFooter(prev, next) {
         let prevHtml = '';
         if (prev) {
           prevHtml = `
           <a href="${prev.url}" class="nav-lesson-btn nav-prev" aria-label="${escapeHtml(prev.label || prev.title)}">
-            <div class="nav-btn-icon-box">
-              <svg class="nav-arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="nav-meta-pill">
+              <svg class="nav-arrow-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
               </svg>
+              <span>${prev.badge || 'មុន'}</span>
             </div>
-            <div class="nav-btn-content">
-              <span class="nav-btn-meta">
-                <span class="nav-btn-badge">${prev.badge || 'មេរៀនមុន'}</span>
-              </span>
-              <span class="nav-btn-title">${prev.title}</span>
-            </div>
+            <div class="nav-btn-title">${cleanNavTitle(prev.title)}</div>
           </a>
           `;
         } else {
@@ -1135,18 +1138,14 @@
         if (next) {
           nextHtml = `
           <a href="${next.url}" class="nav-lesson-btn nav-next" aria-label="${escapeHtml(next.label || next.title)}">
-            <div class="nav-btn-content">
-              <span class="nav-btn-meta">
-                <span class="nav-btn-badge">${next.badge || 'មេរៀនបន្ទាប់'}</span>
-              </span>
-              <span class="nav-btn-title">${next.title}</span>
-            </div>
-            <div class="nav-btn-icon-box">
-              <svg class="nav-arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="nav-meta-pill">
+              <span>${next.badge || 'បន្ទាប់'}</span>
+              <svg class="nav-arrow-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </div>
+            <div class="nav-btn-title">${cleanNavTitle(next.title)}</div>
           </a>
           `;
         } else {
