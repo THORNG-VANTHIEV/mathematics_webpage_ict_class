@@ -758,7 +758,7 @@
         <div class="objectives-card">
           <div class="objectives-title">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-            គោលបំណងនៃមេរៀន (Learning Objectives)
+            <span>គោលបំណងនៃមេរៀន <span class="nowrap-paren">(Learning Objectives)</span></span>
           </div>
           <ul class="objectives-list">
       `;
@@ -766,7 +766,7 @@
             html += `
           <li class="objective-item">
             <svg class="objective-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>${obj}</span>
+            <span>${formatInlineContent(obj)}</span>
           </li>
         `;
           });
@@ -1331,6 +1331,9 @@
         res = res.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
         // Format markdown link [text](url)
         res = res.replace(/\[([^\]]+)\]\((#[^)]+)\)/g, '<a href="$2" class="solution-link">$1</a>');
+
+        // Prevent awkward line wrapping inside parenthesized Latin terms (e.g. "( Logic )", "( Set Theory )")
+        res = res.replace(/(^|\s|[\u1780-\u17FF])\(([A-Za-z0-9\s&,.\-\/]{2,35})\)/g, '$1<span class="nowrap-paren">($2)</span>');
 
         // Format Ctrl + Shift + X / Ctrl + X / Alt + X / F1-F12 keys into <kbd> badges without double nesting
         const kbdTokens = [];

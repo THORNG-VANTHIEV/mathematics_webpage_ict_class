@@ -1272,6 +1272,10 @@ button, input, select, textarea {
   border-color: var(--primary);
 }
 
+.nowrap-paren {
+  white-space: nowrap;
+}
+
 /* Shortcut Cards */
 .shortcuts-grid {
   display: grid;
