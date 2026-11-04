@@ -1104,50 +1104,172 @@ button, input, select, textarea {
 .callout-box {
   display: flex;
   align-items: flex-start;
-  gap: 0.95rem;
-  padding: 1.15rem 1.35rem;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  line-height: 1.85;
-  margin: 0.75rem 0;
-  border: 1px solid transparent;
+  gap: 0.85rem;
+  padding: 1rem 1.25rem;
+  border-radius: 14px;
+  font-size: 0.93rem;
+  line-height: 1.7;
+  margin: 0.85rem 0;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.callout-box.note {
-  background-color: var(--note-bg);
-  border-left: 4px solid var(--note-border);
-  color: var(--text-main);
+/* Subtle left accent bar */
+.callout-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 14px 0 0 14px;
 }
 
+/* Tip styling */
 .callout-box.tip {
-  background-color: var(--tip-bg);
-  border-left: 4px solid var(--tip-border);
-  color: var(--text-main);
+  border-color: rgba(16, 185, 129, 0.28);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.07) 0%, var(--bg-card) 65%);
+}
+.callout-box.tip::before {
+  background-color: #10b981;
 }
 
+/* Note styling */
+.callout-box.note {
+  border-color: rgba(37, 99, 235, 0.25);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, var(--bg-card) 65%);
+}
+.callout-box.note::before {
+  background-color: #3b82f6;
+}
+
+/* Warning styling */
 .callout-box.warning {
-  background-color: var(--warning-bg);
-  border-left: 4px solid var(--warning-border);
-  color: var(--text-main);
+  border-color: rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, var(--bg-card) 65%);
+}
+.callout-box.warning::before {
+  background-color: #f59e0b;
 }
 
-.callout-icon {
-  font-size: 1.25rem;
+/* Dedicated icon badge */
+.callout-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  margin-top: 0.2rem;
+  margin-top: 0.1rem;
 }
 
+.callout-box.tip .callout-icon-box {
+  background-color: rgba(16, 185, 129, 0.14);
+  color: #059669;
+}
+[data-theme="dark"] .callout-box.tip .callout-icon-box {
+  background-color: rgba(16, 185, 129, 0.22);
+  color: #34d399;
+}
+
+.callout-box.note .callout-icon-box {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+}
+[data-theme="dark"] .callout-box.note .callout-icon-box {
+  background-color: rgba(37, 99, 235, 0.22);
+  color: #60a5fa;
+}
+
+.callout-box.warning .callout-icon-box {
+  background-color: rgba(245, 158, 11, 0.14);
+  color: #d97706;
+}
+[data-theme="dark"] .callout-box.warning .callout-icon-box {
+  background-color: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+}
+
+/* Callout content typography */
 .callout-content {
   flex: 1;
-  text-align: justify;
-  text-justify: inter-word;
+  min-width: 0;
+  text-align: left;
+  color: var(--text-body);
 }
 
-.callout-content strong {
-  font-weight: 700;
+.callout-content > strong:first-child {
   display: block;
-  margin-bottom: 0.35rem;
+  font-family: var(--font-heading);
+  font-size: 0.96rem;
+  font-weight: 700;
   color: var(--text-main);
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.01em;
+}
+
+.callout-content strong:not(:first-child) {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Interactive Action Pill for solution/lesson links inside callout */
+.callout-content .solution-link,
+.callout-content a.solution-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.7rem;
+  margin: 0.2rem 0;
+  font-weight: 700;
+  font-size: 0.9em;
+  text-decoration: none;
+  color: var(--primary);
+  background-color: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 9999px;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  vertical-align: middle;
+}
+
+.callout-content .solution-link::after {
+  content: '→';
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95em;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+
+.callout-content .solution-link:hover {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25);
+}
+
+.callout-content .solution-link:hover::after {
+  transform: translateX(2px);
+}
+
+.callout-content .solution-link:active {
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .callout-content .solution-link {
+  background-color: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.3);
+  color: #93c5fd;
+}
+[data-theme="dark"] .callout-content .solution-link:hover {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
 }
 
 /* Shortcut Cards */
