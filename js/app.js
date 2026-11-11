@@ -1310,9 +1310,9 @@
       function formatInlineContent(str) {
         if (!str) return '';
 
-        // First preserve allowed formatting tags: <strong>, </strong>, <b>, </b>, <em>, </i>, <a>
+        // Preserve the book's formatting, including bases and powers from Word.
         const allowed = [];
-        let clean = str.replace(/<\/?(?:strong|b|em|i|a)[^>]*>/gi, function (match) {
+        let clean = str.replace(/<\/?(?:sub|sup)>|<\/?(?:strong|b|em|i|a)[^>]*>/gi, function (match) {
           allowed.push(match);
           return '___SAFE_TAG_' + (allowed.length - 1) + '___';
         });

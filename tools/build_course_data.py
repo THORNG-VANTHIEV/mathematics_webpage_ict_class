@@ -189,10 +189,15 @@ class Docx:
                     rpr = c.find(W + 'rPr')
                     is_bold = rpr is not None and rpr.find(W + 'b') is not None and \
                         rpr.find(W + 'b').get(W + 'val') not in ('0', 'false')
+                    # Word also stores bases and powers as ordinary text runs,
+                    # outside OMML equations. Keep their vertical alignment.
+                    align = rpr.find(W + 'vertAlign') if rpr is not None else None
+                    script = {'subscript': 'sub', 'superscript': 'sup'}.get(
+                        align.get(W + 'val') if align is not None else None)
                     for node in c.iter():
                         if node.tag == W + 't':
                             txt = node.text or ''
-                            texts.append(txt)
+                            texts.append(f'<{script}>{txt}</{script}>' if script and txt else txt)
                             n = len(txt.strip())
                             all_chars += n
                             bold_chars += n if is_bold else 0
@@ -222,6 +227,8 @@ class Docx:
                             images.append(self.rels[rid])
 
         _walk(p)
+        # A single exponent can be split across several Word runs (e.g. − and 9).
+        text = re.sub(r'</(sub|sup)><\1>', '', ''.join(texts))
 
         ppr = p.find(W + 'pPr')
         style, num = None, None
@@ -238,7 +245,7 @@ class Docx:
 
         return {
             'k': 'p',
-            'text': ''.join(texts),
+            'text': text,
             'style': style or '',
             'num': num,
             'images': images,
