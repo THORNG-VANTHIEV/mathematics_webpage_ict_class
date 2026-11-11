@@ -1049,6 +1049,41 @@ button, input, select, textarea {
   overflow-wrap: break-word;
 }
 
+.logic-law {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+
+.logic-law-title {
+  margin: 0;
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.logic-law-formulas {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.logic-law-equation {
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid var(--primary-border);
+  border-radius: 6px;
+  background: var(--bg-subtle);
+  color: var(--text-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 /* Step by Step Cards */
 .steps-container {
   display: flex;

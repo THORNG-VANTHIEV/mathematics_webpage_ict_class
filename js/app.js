@@ -792,6 +792,12 @@
               html += `<h3 class="subsection-heading">${formatInlineContent(item.title)}</h3>`;
             } else if (item.type === 'subtopic') {
               html += `<h4 class="subtopic-heading">${formatInlineContent(item.title)}</h4>`;
+            } else if (item.type === 'logic-law') {
+              html += `<div class="logic-law">
+                <h4 class="logic-law-title">${formatInlineContent(item.title)}</h4>
+                <div class="logic-law-formulas">${item.formulas.map(formula =>
+                  `<div class="logic-law-equation">${formatInlineContent(formula)}</div>`).join('')}</div>
+              </div>`;
             } else if (item.type === 'table') {
               const tableTitle = item.title ? formatInlineContent(item.title) : '';
               html += `
@@ -1414,6 +1420,7 @@
             sec.items.forEach(it => {
               if (it.title) parts.push(it.title);
               if (it.text) parts.push(it.text);
+              if (it.formulas) parts.push(...it.formulas);
               if (it.steps) parts.push(...it.steps);
               if (it.items) parts.push(...it.items);
               if (it.headers) parts.push(...it.headers.map(cellText));

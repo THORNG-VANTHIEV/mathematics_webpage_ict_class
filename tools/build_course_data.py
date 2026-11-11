@@ -339,11 +339,13 @@ class LessonBuilder:
         self.list_block = None
         self.counters = {}
         self.in_objectives = False
+        self.current_subsection = ''
 
     def section(self, title):
         self.cur = {'title': clean(title), 'items': []}
         self.sections.append(self.cur)
         self.list_block = None
+        self.current_subsection = ''
 
     def add(self, item):
         if self.cur is None:
@@ -399,9 +401,21 @@ class LessonBuilder:
             self.section(text)
             return
         if style == 'heading 3':
+            self.current_subsection = p
             self.add({'type': 'subsection', 'title': text})
             return
         if p:
+            # The textbook separates paired logic laws with Word tabs. Keep
+            # those equations distinct instead of collapsing them into prose.
+            if self.lesson_id == 'lesson-01' and self.current_subsection.startswith('៤.៤ '):
+                if re.match(r'^\(\d+\)\.', p):
+                    self.add({'type': 'logic-law', 'title': text.rstrip(' :'), 'formulas': []})
+                    return
+                last = self.cur['items'][-1] if self.cur['items'] else None
+                if last and last['type'] == 'logic-law' and not has_khmer(p) and '≡' in p:
+                    last['formulas'].extend(clean(part) for part in raw.split('\t') if plain(part))
+                    return
+
             # check if purely block formula
             pure_math = re.match(r'^\s*\$([^\$]+)\$\s*$', raw.strip())
             if pure_math and not has_khmer(raw):

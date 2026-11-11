@@ -989,120 +989,109 @@ window.COURSE_DATA = {
               "title": "៤.៤ លក្ខណៈ​ពីជគណិត​នៃ​សំណើ"
             },
             {
-              "type": "paragraph",
-              "text": "(1). លក្ខណៈ​អ៊ីដឹម​ប៉ូ​តង់ (Idempotent Laws) :"
+              "type": "logic-law",
+              "title": "(1). លក្ខណៈ​អ៊ីដឹម​ប៉ូ​តង់ (Idempotent Laws)",
+              "formulas": [
+                "p ∨ p ≡ p",
+                "p ∧ p ≡ p"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "p ∨ p ≡ p p ∧ p ≡ p"
+              "type": "logic-law",
+              "title": "(2). លក្ខណៈ​ផ្​ដុំ (Associative Laws)",
+              "formulas": [
+                "( p ∨ q ) ∨ r ≡ p ∨ (q ∨ r)",
+                "( p ∧ q ) ∧ r ≡ p ∧ (q ∧ r)"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "(2). លក្ខណៈ​ផ្​ដុំ (Associative Laws) :"
+              "type": "logic-law",
+              "title": "(3). លក្ខណៈត្រឡប់ (Commutative Laws)",
+              "formulas": [
+                "p ∨ q ≡ q ∨ p",
+                "p ∧ q ≡ q ∧ p",
+                "p ↔ q ≡ q ↔ p"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "( p ∨ q ) ∨ r ≡ p ∨ (q ∨ r) ( p ∧ q ) ∧ r ≡ p ∧ (q ∧ r)"
+              "type": "logic-law",
+              "title": "(4). លក្ខណៈបំបែក (Distributive Laws)",
+              "formulas": [
+                "p ∨ ( q ∧ r ) ≡ (p ∨ q) ∧ ( p ∨ r )",
+                "p ∧ ( q ∨ r ) ≡ (p ∧ q) ∨ ( p ∧ r )"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "(3). លក្ខណៈត្រឡប់ (Commutative Laws) :"
+              "type": "logic-law",
+              "title": "(5). លក្ខណៈ​ណឺត (Identity Laws)",
+              "formulas": [
+                "p ∨ c ≡ p",
+                "p ∧ t ≡ p",
+                "p ∨ t ≡ t",
+                "p ∧ c ≡ c"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "p ∨ q ≡ q ∨ p p ∧ q ≡ q ∧ p"
+              "type": "logic-law",
+              "title": "(6). លក្ខណៈ​បំពេញ (Complement Laws)",
+              "formulas": [
+                "p ∨ ∼ p ≡ t",
+                "p ∧ ∼p ≡ c",
+                "∼ t ≡ c",
+                "∼ c ≡ t"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "p ↔ q ≡ q ↔ p"
+              "type": "logic-law",
+              "title": "(7). លក្ខណៈ​អាំង​វ៉ូ​លុយ​ស្យុង (Involution Law)",
+              "formulas": [
+                "∼( ∼ p ) ≡ p"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "(4). លក្ខណៈបំបែក (Distributive Laws) :"
+              "type": "logic-law",
+              "title": "(8). លក្ខណៈ DeMorgan (De Morgan's Laws)",
+              "formulas": [
+                "∼( p ∨ q ) ≡ ∼p ∧ ∼q",
+                "∼( p ∧ q ) ≡ ∼p ∨ ∼q"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "p ∨ ( q ∧ r ) ≡ (p ∨ q) ∧ ( p ∨ r ) p ∧ ( q ∨ r ) ≡ (p ∧ q) ∨ ( p ∧ r )"
+              "type": "logic-law",
+              "title": "(9). គោលការណ៍​នៃ​សម្រាយ​បញ្ជាក់​ដោយ​ផ្ទុយ​សម្មតិកម្ម (Contrapositive)",
+              "formulas": [
+                "p → q ≡ ∼q → ∼p"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "(5). លក្ខណៈ​ណឺត (Identity Laws) :"
+              "type": "logic-law",
+              "title": "(10). លក្ខណៈ​បណ្តាល (Implication Laws)",
+              "formulas": [
+                "p → q ≡ ∼p ∨ q",
+                "p → q ≡ ∼( p ∧ ∼q )"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "p ∨ c ≡ p p ∧ t ≡ p"
+              "type": "logic-law",
+              "title": "(11). លក្ខណៈ​សមមូល (Equivalence)",
+              "formulas": [
+                "p ↔ q ≡ ( p → q ) ∧ ( q → p )"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "p ∨ t ≡ t p ∧ c ≡ c"
+              "type": "logic-law",
+              "title": "(12). លក្ខណៈ​លំនាំចេញ (Exportation Law)",
+              "formulas": [
+                "( p ∧ q ) → r ≡ p → ( q → r )"
+              ]
             },
             {
-              "type": "paragraph",
-              "text": "(6). លក្ខណៈ​បំពេញ (Complement Laws) :"
-            },
-            {
-              "type": "paragraph",
-              "text": "p ∨ ∼ p ≡ t p ∧ ∼p ≡ c"
-            },
-            {
-              "type": "paragraph",
-              "text": "∼ t ≡ c ∼ c ≡ t"
-            },
-            {
-              "type": "paragraph",
-              "text": "(7). លក្ខណៈ​អាំង​វ៉ូ​លុយ​ស្យុង (Involution Law) :"
-            },
-            {
-              "type": "paragraph",
-              "text": "∼( ∼ p ) ≡ p"
-            },
-            {
-              "type": "paragraph",
-              "text": "(8). លក្ខណៈ DeMorgan (De Morgan's Laws) :"
-            },
-            {
-              "type": "paragraph",
-              "text": "∼( p ∨ q ) ≡ ∼p ∧ ∼q ∼( p ∧ q ) ≡ ∼p ∨ ∼q"
-            },
-            {
-              "type": "paragraph",
-              "text": "(9). គោលការណ៍​នៃ​សម្រាយ​បញ្ជាក់​ដោយ​ផ្ទុយ​សម្មតិកម្ម (Contrapositive) :"
-            },
-            {
-              "type": "paragraph",
-              "text": "p → q ≡ ∼q → ∼p"
-            },
-            {
-              "type": "paragraph",
-              "text": "(10). លក្ខណៈ​បណ្តាល (Implication Laws) :"
-            },
-            {
-              "type": "paragraph",
-              "text": "p → q ≡ ∼p ∨ q p → q ≡ ∼( p ∧ ∼q )"
-            },
-            {
-              "type": "paragraph",
-              "text": "(11). លក្ខណៈ​សមមូល (Equivalence) :"
-            },
-            {
-              "type": "paragraph",
-              "text": "p ↔ q ≡ ( p → q ) ∧ ( q → p )"
-            },
-            {
-              "type": "paragraph",
-              "text": "(12). លក្ខណៈ​លំនាំចេញ (Exportation Law) :"
-            },
-            {
-              "type": "paragraph",
-              "text": "( p ∧ q ) → r ≡ p → ( q → r )"
-            },
-            {
-              "type": "paragraph",
-              "text": "(13). លក្ខណៈ​ការ​ស្រូប​ចូល (Absorption Law) :"
-            },
-            {
-              "type": "paragraph",
-              "text": "p ∨ ( p ∧ q ) ≡ p p ∧ ( p ∨ q ) ≡ p"
+              "type": "logic-law",
+              "title": "(13). លក្ខណៈ​ការ​ស្រូប​ចូល (Absorption Law)",
+              "formulas": [
+                "p ∨ ( p ∧ q ) ≡ p",
+                "p ∧ ( p ∨ q ) ≡ p"
+              ]
             },
             {
               "type": "callout",
